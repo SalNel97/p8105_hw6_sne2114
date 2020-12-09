@@ -1,1 +1,2 @@
-# p8105_hw6_sne2114
+# P8105 Homework 6
+# Sal El-Sadek
