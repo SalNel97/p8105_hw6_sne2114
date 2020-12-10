@@ -150,3 +150,33 @@ baby_df %>%
 ```
 
 Prediction values seem to be concentrated between 2500 and 4000 while the residual values seem to aggregate between -600 and 1000.
+
+
+
+```{r}
+model_1 = lm(bwt ~ blength + gaweeks, data = baby_df)
+
+baby_df %>% 
+  add_residuals(model_1) %>% 
+  add_predictions(model_1) %>%
+  ggplot(aes(x = pred, y = resid)) + 
+  geom_point(alpha = .4) +
+  labs(
+    title = "Model 1: Baby Body Length and Gestational Age Main Effects Only",
+    x = "Predictions",
+    y = "Residuals")
+
+
+model_2 = lm(bwt ~ (blength + bhead + babysex)^2 + blength*bhead*babysex, data = baby_df)
+
+baby_df %>% 
+  add_residuals(model_2) %>% 
+  add_predictions(model_2) %>%
+  ggplot(aes(x = pred, y = resid)) + 
+  geom_point(alpha = .4) +
+  labs(
+    title = "Apriori Model",
+    x = "Predictions",
+    y = "Residuals")
+```
+
