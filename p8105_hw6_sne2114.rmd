@@ -262,24 +262,28 @@ weather_df
 
 
 ```{r}
-bootstrap_r2 = 
+bootstrap_df = 
   weather_df %>%
-  bootstrap(n = 5000) %>% 
-    mutate(
-      models = map(.x = strap, ~lm(tmax ~ tmin, data = .x)),
-      results = map(models, broom::glance)
-    ) %>% 
-    select(-strap, -models) %>% 
-    unnest(results)
+  bootstrap(5000, id = "strap_id") %>%
+  mutate(
+    models = map(.x = strap, ~lm(tmax ~ tmin, data = .x)),
+    results_1 = map(models, broom::glance),
+    results_2 = map(models, broom::tidy)
+    ) %>%
+  select(strap_id, results_1, results_2) %>%
+  unnest(results_1, results_2) %>%
+  pivot_wider(
+    names_from = term, 
+    values_from = estimate
+    ) %>%
+  group_by(strap_id) %>%
+  summarise_each(funs(first(.[!is.na(.)]))) %>%
+  rename(intercept = '(Intercept)') %>%
+  mutate(
+    LOG = log(intercept * tmin)
+    ) %>%
+  select(strap_id, r.squared, intercept, tmin, LOG)
 
-bootstrap_r2
-
-bootstrap_r2 %>% 
-  ggplot(aes(x = r.squared)) +
-  geom_density() +
-  labs(
-   title = "Distribution of r-squared",
-   x = "r-squared",
-   y = "Density")
+bootstrap_df
 ```
 
