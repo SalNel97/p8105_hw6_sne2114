@@ -259,3 +259,27 @@ weather_df =
 weather_df
 ```
 
+
+
+```{r}
+bootstrap_r2 = 
+  weather_df %>%
+  bootstrap(n = 5000) %>% 
+    mutate(
+      models = map(.x = strap, ~lm(tmax ~ tmin, data = .x)),
+      results = map(models, broom::glance)
+    ) %>% 
+    select(-strap, -models) %>% 
+    unnest(results)
+
+bootstrap_r2
+
+bootstrap_r2 %>% 
+  ggplot(aes(x = r.squared)) +
+  geom_density() +
+  labs(
+   title = "Distribution of r-squared",
+   x = "r-squared",
+   y = "Density")
+```
+
