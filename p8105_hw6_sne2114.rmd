@@ -133,3 +133,20 @@ baby_df %>% is.na() %>% summary()
 baby_df
 ```
 
+I have hypothesised a model based on apriori hypotheses which focus on physical and growth attributes for the baby (body length, head circumference, gestational age) and weight attributes of the mother (pre-pregnancy weight, weight at delivery, weight gained during pregnancy) to predict birthweight for the baby. I also thought to include a delwt*wtgain interaction term since weight gained during pregnancy is related to mother's weight at delivery (buit not pre-preganncy weight).
+
+```{r}
+my_model = lm(bwt ~ blength + bhead + gaweeks + delwt + ppwt + wtgain + delwt*wtgain, data = baby_df)
+
+baby_df %>% 
+  add_residuals(my_model) %>% 
+  add_predictions(my_model) %>%
+  ggplot(aes(x = pred, y = resid)) + 
+  geom_point(alpha = .4) +
+  labs(
+    title = "Apriori Model",
+    x = "Predictions",
+    y = "Residuals")
+```
+
+Prediction values seem to be concentrated between 2500 and 4000 while the residual values seem to aggregate between -600 and 1000.
