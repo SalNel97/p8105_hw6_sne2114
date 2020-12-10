@@ -308,3 +308,19 @@ bootstrap_df %>%
    y = "Density")
 ```
 
+
+
+```{r}
+bootstrap_df %>% 
+  pull(r.squared) %>% 
+  quantile(c(0.025, 0.975))
+```
+
+
+
+```{r}
+bootstrap_df %>% 
+  pull(LOG) %>% 
+  quantile(c(0.025, 0.975))
+```
+
