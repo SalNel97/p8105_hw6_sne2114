@@ -287,3 +287,24 @@ bootstrap_df =
 bootstrap_df
 ```
 
+
+
+```{r}
+bootstrap_df %>% 
+  ggplot(aes(x = r.squared)) +
+  geom_density() +
+  labs(
+   title = "Distribution of r-squared",
+   x = "r-squared",
+   y = "Density")
+
+
+bootstrap_df %>% 
+  ggplot(aes(x = LOG)) +
+  geom_density() +
+  labs(
+   title = "Distribution of Log (B1*B2)",
+   x = "Log (B1*B2)",
+   y = "Density")
+```
+
