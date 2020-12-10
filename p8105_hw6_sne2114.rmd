@@ -113,8 +113,23 @@ models_results_df %>%
   scale_y_continuous(breaks = seq(0, 28, by = 1))
 ```
 
-It seems like all the ORs are above 1 for every city, meaning the odds of solving a homicide for a white victim are better than the odds of solving a homicide for a black victim. Oaklan, Omaha, Boston, and Pittsburgh are the cities with the highest ORs.
+It seems like all the ORs are above 1 for every city, meaning the odds of solving a homicide for a white victim are better than the odds of solving a homicide for a black victim. Oakland, Omaha, Boston, and Pittsburgh are the cities with the highest ORs.
 
 ## Problem 2
 
+Read in and tidy data set as well as change variables to factors as appropriate. We also checked that all 4342 entries for every variable returns false when checking for missing values.
+
+```{r}
+baby_df =
+  read_csv("./data/birthweight.csv") %>% 
+  janitor::clean_names() %>% 
+  mutate(babysex = as.factor(babysex),
+         frace = as.factor(frace),
+         malform = as.factor(malform),
+         mrace = as.factor(mrace))
+ 
+baby_df %>% is.na() %>% summary()
+
+baby_df
+```
 
