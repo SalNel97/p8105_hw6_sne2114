@@ -137,6 +137,7 @@ I have hypothesised a model based on apriori hypotheses which focus on physical 
 
 ```{r}
 my_model = lm(bwt ~ blength + bhead + gaweeks + delwt + ppwt + wtgain + delwt*wtgain, data = baby_df)
+summary(my_model)
 
 baby_df %>% 
   add_residuals(my_model) %>% 
@@ -151,10 +152,11 @@ baby_df %>%
 
 Prediction values seem to be concentrated between 2500 and 4000 while the residual values seem to aggregate between -600 and 1000.
 
-
+We will compared our model to two other hypothesized models: one predicting birth weight using baby body length and gestational age main effects only, the other model using baby body length, baby head circumference, baby sex, and all possible interaction terms to predict birth weight.
 
 ```{r}
 model_1 = lm(bwt ~ blength + gaweeks, data = baby_df)
+summary(model_1)
 
 baby_df %>% 
   add_residuals(model_1) %>% 
@@ -162,12 +164,13 @@ baby_df %>%
   ggplot(aes(x = pred, y = resid)) + 
   geom_point(alpha = .4) +
   labs(
-    title = "Model 1: Baby Body Length and Gestational Age Main Effects Only",
+    title = "Model 1: Body Length and Gestational Age Main Effects Only",
     x = "Predictions",
     y = "Residuals")
 
 
 model_2 = lm(bwt ~ (blength + bhead + babysex)^2 + blength*bhead*babysex, data = baby_df)
+summary(model_2)
 
 baby_df %>% 
   add_residuals(model_2) %>% 
@@ -175,8 +178,9 @@ baby_df %>%
   ggplot(aes(x = pred, y = resid)) + 
   geom_point(alpha = .4) +
   labs(
-    title = "Apriori Model",
+    title = "Model 2: Body Length, Head Circumference, Sex, and All Possible Interactions ",
     x = "Predictions",
     y = "Residuals")
 ```
 
+We can already visually see that the scatter plots for model 1 and model 2 are more aggregated and compact that the plot for my model (the majority of residuals and prediction values seem to be condensed within a smaller range of values than in my model).
