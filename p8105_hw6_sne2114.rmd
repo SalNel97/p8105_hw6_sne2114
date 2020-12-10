@@ -235,7 +235,7 @@ cv_df %>%
    scale_y_continuous(breaks = seq(200, 400, by = 25))
 ```
 
-We can see that my model has the lowest RMSE on average making it the best predictor model out of the 3 discussed.
+We can see that my model has the lowest RMSE on average making it the best predictor model out of the 3 discussed. The distribution of my model's violin plot looks very similar to that of the all interactions model. The main effects model clearly has the highest average RMSE, making it the worst predictor model.
 
 
 ## Problem 3
@@ -259,7 +259,7 @@ weather_df =
 weather_df
 ```
 
-
+Bootstrapping 5000 times and tidying the bootstrap data frame to include r2 and Log(B0 * B1).
 
 ```{r}
 bootstrap_df = 
@@ -287,7 +287,7 @@ bootstrap_df =
 bootstrap_df
 ```
 
-
+We will then plot the distributions for both r2 and Log(B0 * B1).
 
 ```{r}
 bootstrap_df %>% 
@@ -303,12 +303,14 @@ bootstrap_df %>%
   ggplot(aes(x = LOG)) +
   geom_density() +
   labs(
-   title = "Distribution of Log (B1*B2)",
-   x = "Log (B1*B2)",
+   title = "Distribution of Log (B0*B1)",
+   x = "Log (B0*B1)",
    y = "Density")
 ```
 
+We can see that both plots are basically normally distributed.
 
+The 95% confidence interval for r squared is:
 
 ```{r}
 bootstrap_df %>% 
@@ -316,7 +318,7 @@ bootstrap_df %>%
   quantile(c(0.025, 0.975))
 ```
 
-
+The 95% confidence interval for Log(B0 * B1) is:
 
 ```{r}
 bootstrap_df %>% 
